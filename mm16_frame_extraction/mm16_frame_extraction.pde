@@ -127,7 +127,8 @@ void reset() {
   initControls();
 }
 
-void process() {
-  // To be done.
+void saveAll() {
+  // save values to be used for batch processing
+  // that process will be based on existing code for 35mm (see repo)
 }
 
