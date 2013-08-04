@@ -1,0 +1,13 @@
+*.DS_Store
+*.tif
+*.TIF
+*.tiff
+*.TIFF
+*.png
+*.PNG
+*.jpg
+*.JPG
+*.dpx
+*.DPX
+*.vlw
+log.txt
