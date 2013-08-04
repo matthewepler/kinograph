@@ -37,7 +37,7 @@ class Extractor {
     resizer = _r;
     copy = loadImage( _f );
     copy.resize( resizer, 0 );
-    name = _f.substring( 0,  _f.lastIndexOf('.')).toLowerCase();
+    name = _f;
   }
 
 
@@ -319,7 +319,8 @@ class Extractor {
     result.beginDraw();
     result.copy( copy, r.x, r.y, r.width, r.height, 0, 0, r.width, r.height );
     if ( processAll ) {
-      result.save( "output/" + name + ".jpg" ); 
+      String nameStrip =  name.substring( 0,  name.lastIndexOf('.')).toLowerCase()
+      result.save( "output/" + nameStrip + ".jpg" ); 
     }
     result.endDraw();
     return result;
