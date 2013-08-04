@@ -16,10 +16,10 @@ public class ControlFrame extends PApplet {
       // Canny Edges
       controlP5.Numberbox cannyLow = cp5.addNumberbox( "low" ).setPosition( 70, 80 ).setSize( 130, 20 ).setRange( 0, 150 ).setScrollSensitivity( 1.0 ).setValue( extractor.canny1 ).setDirection( Controller.HORIZONTAL ); 
       cannyLow.captionLabel().style().setMarginLeft( - 45 ).setMarginTop( - 20 );
-      cannyLow.valueLabel().style().setMarginLeft( 78 ); 
+      cannyLow.valueLabel().style().setMarginLeft( 80 ); 
       controlP5.Numberbox cannyHigh = cp5.addNumberbox( "high" ).setPosition( 70, 110).setSize( 130, 20 ).setRange( 0, 250 ).setScrollSensitivity( 1.0 ).setValue( extractor.canny2 ).setDirection( Controller.HORIZONTAL );
       cannyHigh.captionLabel().style().setMarginLeft( - 45 ).setMarginTop( - 20 );
-      cannyHigh.valueLabel().style().setMarginLeft( 78 );
+      cannyHigh.valueLabel().style().setMarginLeft( 80 );
       // Hough Lines
       controlP5.Numberbox houghThresh = cp5.addNumberbox( "thresh" ).setPosition( 90, 180 ).setSize( 110, 20 ).setRange( 0, 600 ).setScrollSensitivity( 1.0 ).setValue( extractor.hLines1 ).setDirection( Controller.HORIZONTAL );
       houghThresh.captionLabel().style().setMarginLeft( -65 ).setMarginTop( -20 );
@@ -29,7 +29,7 @@ public class ControlFrame extends PApplet {
       houghMinLen.valueLabel().style().setMarginLeft( 52 ); 
       controlP5.Numberbox maxGap = cp5.addNumberbox( "maxGap" ).setPosition( 90, 240 ).setSize( 110, 20 ).setRange( 0, 20 ).setScrollSensitivity( 1.0 ).setValue( extractor.hLines3 ).setDirection( Controller.HORIZONTAL );
       maxGap.captionLabel().style().setMarginLeft( -65 ).setMarginTop( -20 );
-      maxGap.valueLabel().style().setMarginLeft( 65 ); 
+      maxGap.valueLabel().style().setMarginLeft( 67 ); 
       
       // SPROCKET SETTINGS
       // minEdgeLen
@@ -72,9 +72,20 @@ public class ControlFrame extends PApplet {
       controlP5.Button rightMinus = cp5.addButton( "rightMinus" ).setPosition( 125, 570 ).setSize( 20, 20 );
       rightMinus.captionLabel().setText( "-" ).style().setMarginLeft( 2 ).setMarginTop( -1 );
       
+      // ROI ADJUSTMENT
+      // position
+      controlP5.Button roiUp = cp5.addButton( "roiUp" ).setPosition( 100, 650 ).setSize( 20, 20 );
+      roiUp.captionLabel().setText( "+" ).style().setMarginLeft( 2 ).setMarginTop( -1 );
+      controlP5.Button roiDown = cp5.addButton( "roiDown" ).setPosition( 125, 650 ).setSize( 20, 20 );
+      roiDown.captionLabel().setText( "-" ).style().setMarginLeft( 2 ).setMarginTop( -1 );
+      // size
+      controlP5.Button sizeUp = cp5.addButton( "sizeUp" ).setPosition( 100, 680 ).setSize( 20, 20 );
+      sizeUp.captionLabel().setText( "+" ).style().setMarginLeft( 2 ).setMarginTop( -1 );
+      controlP5.Button sizeDown = cp5.addButton( "sizeDown" ).setPosition( 125, 680 ).setSize( 20, 20 );
+      sizeDown.captionLabel().setText( "-" ).style().setMarginLeft( 2 ).setMarginTop( -1 );
       
-                         // index, x,  y,  w,  h  
-      cp5.addButton( "refresh", 2, 10, 620, 190, 30 ).setColor( refresh );
+      
+                            // index, x,  y,  w,  h  
       cp5.addButton(" reset all", 0, 10, 800, 90, 30 ).setColor( warning ).plugTo( parent, "reset" );
       cp5.addButton("GO", 1, 110, 800, 100, 30 ).setColor( c ).plugTo( parent, "processAll" );
   }
@@ -82,25 +93,30 @@ public class ControlFrame extends PApplet {
   public void draw() {
       background( 50 );
       textFont( font );
+      
       text( "ROTATION = " + (float)extractor.angleAvg, 25, 25 );
       text( "CANNY EDGES THRESH", 25, 70 );
       text( "HOUGH LINES", 25, 170 );
       text( "SPROCKET SETTINGS", 25, 300 );
       text( "FRAME MARGIN", 25, 430 );
+      text( "ROI ADJUSTMENT", 25, 635 );
+      
       textSize( 14 );
       text( "ALL", 25, 455 );
       text( "TOP", 25, 495 ); 
       text( "BOTTOM", 25, 525 );
       text( "LEFT", 25, 555 );
       text( "RIGHT", 25, 585 );
-     
       text( "∆ = " + padding + ".0", 160, 455 );
       if( extractor.sprocketSet ) {
-      text( extractor.frameRect.y + ".0", 160, 495 ); 
-      text( extractor.frameRect.y + extractor.frameRect.height + ".0", 160, 525 ); 
-      text( extractor.frameRect.x + ".0", 160, 555 );
-      text( extractor.frameRect.x + extractor.frameRect.width + ".0", 160, 585 );
+        text( extractor.frameRect.y + ".0", 160, 495 ); 
+        text( extractor.frameRect.y + extractor.frameRect.height + ".0", 160, 525 ); 
+        text( extractor.frameRect.x + ".0", 160, 555 );
+        text( extractor.frameRect.x + extractor.frameRect.width + ".0", 160, 585 );
       }
+      
+      text( "POSITION", 25, 665 );
+      text( "SIZE", 25, 695 );
       textSize( 16 );
   }
   
@@ -122,19 +138,13 @@ public class ControlFrame extends PApplet {
     // Canny Edge Thresh
     controlP5.Controller cLow = cp5.getController( "low" );
     int newLow = (int)cLow.getValue();
-    if( processAll ) {
-      b.e.canny1 = newLow;
-    } else {
-      extractor.canny1 = newLow;
-    }
+    extractor.canny1 = newLow;
+
     
     controlP5.Controller cHigh = cp5.getController( "high" );
     int newHigh = (int)cHigh.getValue();
-    if( processAll ) {
-      b.e.canny2 = newHigh;
-    } else {
-      extractor.canny2 = newHigh;
-    }
+    extractor.canny2 = newHigh;
+ 
     
     // Hugh Lines
     controlP5.Controller t = cp5.getController( "thresh" );
@@ -189,7 +199,8 @@ public class ControlFrame extends PApplet {
   
   void updateFile() {
     controlP5.Controller s = cp5.getController( "scrubber" );
-//    extractor.reload( files[ fileNum-1 ] ); 
+    int fileNum = (int)s.getValue();
+    extractor.reload( files[ fileNum-1 ] ); 
   }
   
   // =============================================================== REFRESH ===== //
@@ -197,7 +208,6 @@ public class ControlFrame extends PApplet {
      update();
      extractor.go();
   }
-  
   
   // ================================================ FRAME ADJUSTMENT FUNCS ===== //
   void allPlus() {
@@ -266,6 +276,36 @@ public class ControlFrame extends PApplet {
     extractor.frameRect.width -= 2;
     extractor.frame = extractor.extractFrame(extractor.frameRect);
   }
+  
+  
+  // ROI ADJUSTMENTS
+  void roiUp() {
+    extractor.roiY -= 5;
+    refresh();
+  }
+  
+  void roiDown() {
+    extractor.roiY += 5;
+    refresh();
+  }
+  
+  void sizeUp() {
+    extractor.roiY -= 5;
+    extractor.roiH += 5;
+  }
+  
+  void sizeDown() {
+    extractor.roiY += 5;
+    extractor.roiH -= 5;
+  }
+  
+  // REFRESH when values changed by user
+  void mouseReleased() {
+    if( mouseY < cf.h/2 ) {
+      cf.refresh(); 
+    }
+  }
+  
   
   ControlP5 cp5;
 

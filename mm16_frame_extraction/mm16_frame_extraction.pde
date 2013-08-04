@@ -16,7 +16,7 @@ PFont font;
 boolean reset, process, processAll;
 String path = "/Users/matthewepler/Documents/myProjects/Kinograph/code_current/kinograph/mm16_frame_extraction/data/";
 String[] files;
-int currentFrame = 1;
+int currentFrame;
 boolean scrubber;
 File dir;
 
@@ -27,7 +27,8 @@ BatchProcessor b;
 
 void setup() {
   getDirectory();
-  String imageFile = files[ files.length/2 ];
+  currentFrame = files.length/2;
+  String imageFile = files[ currentFrame ];
   
   extractor = new Extractor( this, 800, imageFile );
   extractor.setDefaultValues();
@@ -49,8 +50,13 @@ void draw() {
     scrubber = false;
   }
 
-  background( 50 );
-  extractor.display();
+  if( !processAll ) {
+    background( 50 );
+    extractor.display(); 
+  } else {
+    background( 200, 20 );
+    text( "PROCESSING BATCH", 0, 0 );
+  }
 }
 
 
@@ -60,9 +66,6 @@ void mouseReleased() {
     if ( !extractor.roiSet ) {
       extractor.roiSet = true;
     } 
-    else {
-      extractor.roiSet = false;
-    }
   } 
   else { // we're in scrubber and don't want to reload until we've let go
     if ( currentFrame > 0 ) {
@@ -80,14 +83,14 @@ void initControls() {
   cf = addControlFrame( "Controls", 225, 900, 0, 0 );
   
   controlP5.Slider scrubber = cp5.addSlider( "scrubber" );
+  scrubber.setValue( currentFrame );
   scrubber.setPosition( 75, height- 40 ).setSize( width - 100, 20 );
   scrubber.setRange( 1, files.length );
   scrubber.setNumberOfTickMarks( 24 );
   scrubber.setDefaultValue( files.length/2 );
   scrubber.snapToTickMarks( false );
   scrubber.setSliderMode(Slider.FLEXIBLE);
-  int currFileNumber = int( scrubber.valueLabel().toString() );
-  scrubber.setValueLabel( "File " + currFileNumber + " of " + (files.length-1) );
+  scrubber.setValueLabel( "File " + currentFrame + " of " + (files.length-1) );
   scrubber.setCaptionLabel( "" );
 }
 
@@ -110,7 +113,7 @@ void scrubber( int value )
 {
   currentFrame = value;
   controlP5.Controller s = cp5.getController( "scrubber" );
-  s.setValueLabel( "File " + value + " of " + files.length );
+  s.setValueLabel( "File " + currentFrame + " of " + files.length );
 }
 
 void getDirectory() {
@@ -139,11 +142,9 @@ void reset() {
 }
 
 void processAll() {
-//  processAll = true;
-//  fill( 0, 200 );
-//  rect( 0, 0, width, height );
-//  b = new BatchProcessor( this, dir, extractor.frameRect, extractor.resizer );
-//  b.process();
-//  println( b.bSizer );
+  processAll = true;
+  b = new BatchProcessor( this, dir, extractor );
+  b.process();
+  processAll = false;
 }
 

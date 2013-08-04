@@ -24,6 +24,7 @@ class Extractor {
   double angleAvg;
   float minX, maxX;
   boolean rotationSet, edgesFound, sprocketSet, frameFound;
+  String name;
   
   Rectangle firstSprocket, secondSprocket, frameRect;
   OpenCV sprocket;
@@ -36,6 +37,7 @@ class Extractor {
     resizer = _r;
     copy = loadImage( _f );
     copy.resize( resizer, 0 );
+    name = _f.substring( 0,  _f.lastIndexOf('.')).toLowerCase();
   }
 
 
@@ -43,18 +45,18 @@ class Extractor {
   void go() {
     if ( !rotationSet ) {
       copy = calcRotation( copy );
-    } 
-    else {
-      if ( roiSet ) {
-        ROImage = createImage( copy.width, roiH, ARGB );
-        ROImage.copy( copy, 0, roiY, copy.width, roiH, 0, 0, copy.width, roiH );
-        edges = findFilmEdges(); //println( "minX: " + minX ); println( "maxX: " + maxX );
-        if ( findSprockets() ) {
-          frameRect = calcFrameRect();
-          frame = extractFrame( frameRect );
-        }
-      }
     }
+
+    if ( roiSet ) {
+      ROImage = createImage( copy.width, roiH, ARGB );
+      ROImage.copy( copy, 0, roiY, copy.width, roiH, 0, 0, copy.width, roiH );
+      edges = findFilmEdges(); //println( "minX: " + minX ); println( "maxX: " + maxX );
+      if ( findSprockets() ) {
+        frameRect = calcFrameRect();
+        frame = extractFrame( frameRect );
+      }
+    } 
+
   }
 
   // =========================================================================== SET VALUES //
@@ -65,6 +67,10 @@ class Extractor {
     hLines2 = 600;
     hLines3 = 5;
     sprocketThresh = 150;
+    roiY = 200;
+    roiH = 500;
+    roiSet = true;
+    showRoi = true;
   }
 
   void getUserDefinedValues() {
@@ -309,12 +315,13 @@ class Extractor {
 
   // ======================================================================= EXTRACT FRAMES //
   PImage extractFrame( Rectangle r ) {
-    PImage result = createImage( r.width, r.height, ARGB );
+    PGraphics result = createGraphics( r.width, r.height );
+    result.beginDraw();
     result.copy( copy, r.x, r.y, r.width, r.height, 0, 0, r.width, r.height );
     if ( processAll ) {
-      save( "output/" + result ); 
-      println( "saved" );
+      result.save( "output/" + name + ".jpg" ); 
     }
+    result.endDraw();
     return result;
   }
 
@@ -347,7 +354,7 @@ class Extractor {
         rect( firstSprocket.x + width/2, firstSprocket.y, firstSprocket.width, firstSprocket.height );
         rect( secondSprocket.x + width/2, secondSprocket.y, secondSprocket.width, secondSprocket.height );
         stroke( 255, 0, 255 );
-        image( frame, copy.width + 100, roiH + 20);
+        image( frame, copy.width + 100, height - frame.height - 70);
       } 
       else {
         fill( #FCE400 );
@@ -374,8 +381,10 @@ class Extractor {
   // ============================================================================== RELOAD // **
   void reload( String s ) {
     copy = loadImage( s );
+    name = s.substring( 0,  s.lastIndexOf('.')).toLowerCase();
     copy.resize( resizer, 0 );
     getUserDefinedValues();
+    roiSet = true;
     rotationSet = false;
     edgesFound = false;
     sprocketSet = false; 
