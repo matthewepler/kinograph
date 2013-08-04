@@ -1,25 +1,19 @@
 class Extractor {
 
   int resizer;
-  int mWidth, mHeight;
-  String path;
+
+  // ROI variables
   int currX, currY;
   int roiY, roiH;
   boolean roiSet, showRoi, posCaptured;
-  boolean sprocketSet, frameFound;
   PFont font;
 
-  // controller variables
+  // OpenCV variables
   int canny1, canny2;
   int hLines1, hLines2, hLines3;
-
   int sprocketThresh;
-  float sprocketHeight;
-  PVector sprocketPos;
-  int topY, bottomY, rightX, leftX, sprktHeight, sprktWidth;
-  float minX, maxX;
   
-  // adjustable in GUI by user
+  // Sprocket search variables
   int minEdgeLen;
   int rowThresh;
   int colThresh;
@@ -27,6 +21,9 @@ class Extractor {
   PImage copy, CVout, ROImage, frame;
   float[] edges = new float[2];
   double angleAvg;
+  float minX, maxX;
+  boolean rotationSet, edgesFound, sprocketSet, frameFound;
+  
   Rectangle firstSprocket, secondSprocket, frameRect;
   OpenCV sprocket;
   PApplet applet;
@@ -37,37 +34,41 @@ class Extractor {
     applet = _this;
     resizer = _r;
     copy = loadImage( _f );
-    copy.resize( resizer, 0 ); 
+    copy.resize( resizer, 0 );
   }
 
-    
+
   // ================================================================================== GO //
   void go() {
-    copy = calcRotation( copy );
-    if( roiSet ) {
-      ROImage = createImage( copy.width, roiH, ARGB );
-      ROImage.copy( copy, 0, roiY, copy.width, roiH, 0, 0, copy.width, roiH );
-      edges = findFilmEdges();
-      if( sprocketSet ) {
-        frame = extractFrame( calcFrameRect() );
-      }
+    if ( !rotationSet ) {
+      copy = calcRotation( copy );
     } 
+    else {
+      if ( roiSet ) {
+        ROImage = createImage( copy.width, roiH, ARGB );
+        ROImage.copy( copy, 0, roiY, copy.width, roiH, 0, 0, copy.width, roiH );
+        edges = findFilmEdges(); //println( "minX: " + minX ); println( "maxX: " + maxX );
+        if ( findSprockets() ) {
+          frame = extractFrame( calcFrameRect() );
+        }
+      }
+    }
   }
-  
+
   // ================================================================== SET DEFAULT VALUES //
   void setDefaultValues() {
-      canny1  = 20;
-      canny2  = 75;
-      hLines1 = 100;
-      hLines2 = 600;
-      hLines3 = 5;
-      sprocketThresh = 150;
+    canny1  = 20;
+    canny2  = 75;
+    hLines1 = 100;
+    hLines2 = 600;
+    hLines3 = 5;
+    sprocketThresh = 150;
   }
-  
+
   void getUserDefinedValues() {
-      cf.update(); 
+    cf.update();
   } 
-    
+
   // =================================================================== CALCULATE ROTATION // 
   PImage calcRotation( PImage input ) {
     OpenCV full = new OpenCV( applet, input );
@@ -78,12 +79,19 @@ class Extractor {
     // thresh,  minLen,  maxGap
     ArrayList<Line> lines = full.findLines( hLines1, hLines2, hLines3 );
 
+    if ( lines.size() > 2 ) {
+      rotationSet = true;
+    } 
+    else {
+      rotationSet = false;
+    }
+
     double angleTotal = 0;
     for ( int i = 0; i < lines.size(); i++ ) {
       Line line = lines.get( i );
       angleTotal += line.angle;
     }
-    
+
     angleAvg = angleTotal / lines.size();
 
     PGraphics prep = createGraphics( input.height, input.width );
@@ -95,8 +103,8 @@ class Extractor {
     PImage result = prep.get(  0, 0, prep.width, prep.height );
     return result;
   } 
-  
-  
+
+
   // ============================================================= FIND FILM EDGES ======== //
   float[] findFilmEdges() {   
     PImage roiFrame = createImage( copy.width, roiH, ARGB );
@@ -111,51 +119,58 @@ class Extractor {
     hLines2 = roiFrame.height - 20;
 
     ArrayList<Line> edges = sprocket.findLines( hLines1, hLines2, hLines3 );  
-
-    if( !processAll ) {
-      if ( edges.size() < 2 ) {
-        fill( #FCE400 );
-        text( "No frame edges found. Adjust settings and refresh.", copy.width + 70, roiH + 200 );
-      }
+    
+    if ( !processAll ) {
       CVout = sprocket.getOutput();
       image( sprocket.getOutput(), width/2, 0 );
     }
 
     // sort Hugh Lines to determine which lines represent the edges of the film.
-    float[] linePos = new float[ edges.size() ];
-    for ( int i = 0; i < edges.size(); i++ ) {
-      Line l = edges.get( i );
-      linePos[ i ] = l.start.x;
-    }
+    if ( edges.size() > 1 ) {
+      edgesFound = true;
+      float[] linePos = new float[ edges.size() ];
+      for ( int i = 0; i < edges.size(); i++ ) {
+        Line l = edges.get( i );
+        linePos[ i ] = l.start.x;
+      }
 
-    float[] sorted = sort( linePos );
+      float[] sorted = sort( linePos );
 
-    int margin = 15;
-    if ( sorted[0] > margin ) {
-      minX = sorted[0];
+      int margin = 15;
+      if ( sorted[0] > margin ) {
+        minX = sorted[0];
+      } 
+      else {
+        minX = sorted[1];
+      }
+
+      if ( sorted[ sorted.length - 2 ] < copy.width - margin ) {
+        maxX = sorted[ sorted.length - 2 ];
+      } 
+      else {
+        maxX = sorted[ sorted.length - 3 ];
+      }
+
+      float[] result = { 
+        minX, maxX
+      };
+      return result;
     } 
     else {
-      minX = sorted[1];
+      edgesFound = false;
+      float[] result = { 0, copy.width };
+      return result;
     }
-
-    if ( sorted[ sorted.length - 2 ] < copy.width - margin ) {
-      maxX = sorted[ sorted.length - 2 ];
-    } 
-    else {
-      maxX = sorted[ sorted.length - 3 ];
-    }
-    
-    float[] result = { minX, maxX };
-    return result;
   }
 
 
   // ============================================================= FIND SPROCKETS ========= //
-  boolean findSprockets() { 
+  boolean findSprockets( ) { 
+    boolean result = false;
     try {
       // find first sprocket
       cf.update();
-      int startX = width/2 + (int)minX + 10;
+      int startX = (int)minX + 10;
       int endX = startX + 90;
       int startY = 0;
       int endY = ROImage.height / 3;
@@ -173,21 +188,20 @@ class Extractor {
       secondSprocket = evaluatePixels( startX, endX, startY, endY, minEdgeLen, rowThresh, colThresh );
       float secondArea = secondSprocket.width * secondSprocket.height; 
 
-      //println( "secondArea: " + secondArea + ", " + "firstArea: " + firstArea );
+      println( "secondArea: " + secondArea + ", " + "firstArea: " + firstArea );
 
-      if ( abs( secondArea - firstArea) < 250 ) {
-        frameFound = true;
+      if ( abs( secondArea - firstArea) < 500 ) {
         sprocketSet = true;
+        result = true;
         calcFrameRect();
-        return true;
       }
     }  
     catch ( Exception e ) {
       //println( e );
       sprocketSet = false;
-      return false;
+      result = false;
     }
-    return true;
+    return result;
   }
 
 
@@ -209,7 +223,7 @@ class Extractor {
     for ( int y = startY; y < endY; y++ ) {
       int whiteCount = 0;
       for ( int x = startX; x < endX; x++ ) {
-        color c = get( x, y );     
+        color c = CVout.get( x, y );     
         if ( brightness( c ) > 200 ) {
           whiteCount++;
         }
@@ -229,9 +243,9 @@ class Extractor {
     }
     //  sort( rows );
     //println( rows );
-    topY = rows[0];
-    bottomY = rows[ rows.length-1 ];
-    sprktHeight = bottomY - topY;
+    int topY = rows[0];
+    int bottomY = rows[ rows.length-1 ];
+    int sprktHeight = bottomY - topY;
 
 
     // FIND THE VERTICAL COLUMNS
@@ -239,7 +253,7 @@ class Extractor {
     for ( int x = startX; x < endX; x++ ) {
       int whiteCount = 0;
       for ( int y = topY; y < bottomY; y++ ) {
-        color c = get( x, y );
+        color c = CVout.get( x, y );
         if ( brightness( c ) > 200 ) {
           whiteCount++;
         }
@@ -260,10 +274,10 @@ class Extractor {
     }
     sort( cols );
     //println( cols );
-    leftX  = cols[ 0 ];
+    int leftX  = cols[ 0 ];
     //println( leftX );
-    rightX = cols[ cols.length-1 ];
-    sprktWidth = rightX - leftX;
+    int rightX = cols[ cols.length-1 ];
+    int sprktWidth = rightX - leftX;
 
     Rectangle result = new Rectangle( leftX, topY, sprktWidth, sprktHeight );
     return result;
@@ -278,11 +292,11 @@ class Extractor {
     int frameHeight = (int)frameBot - (int)frameTop;
 
     // find the left side of the frame (split any difference there might be)
-    int frameLeft = (firstSprocket.x - copy.width) + firstSprocket.width;
+    int frameLeft = (firstSprocket.x) + firstSprocket.width;
 
     // dist between left edge of film & left side of frame == dst between right side of film and right side of frame
     // aka, frame width
-    float sideMargin = (firstSprocket.x - copy.width) + firstSprocket.width - minX;
+    float sideMargin = (firstSprocket.x) + firstSprocket.width - minX;
     float frameRight = maxX - sideMargin;
 
     int frameWidth = (int)frameRight - (int)frameLeft;
@@ -302,51 +316,48 @@ class Extractor {
     return result;
   }
 
-  
+
   // ============================================================================= DISPLAY //
   void display() {
     image( copy, 0, 0 );
     fill( 255, 200 );
 
     updateRoi();
+
     if ( roiSet && !sprocketSet ) {
-      cf.update();
-      findFilmEdges();
-      findSprockets();
-    }
+      getUserDefinedValues();
+      go();
+    } 
 
-
-    if ( sprocketSet ) {
-      image( CVout, width/2, 0 );
-      stroke( 0, 255, 0 );
-      strokeWeight( 3 );
-      noFill();
-      rect( firstSprocket.x, firstSprocket.y, firstSprocket.width, firstSprocket.height );
-      rect( secondSprocket.x, secondSprocket.y, secondSprocket.width, secondSprocket.height );
-      stroke( 255, 0, 255 );
-
+    if ( edgesFound ) {
       // SHOW HUGH LINES
       line( edges[0], roiY, edges[0], roiH );
       line( edges[1], roiY, edges[1], roiH );
-     
-      // show minX and maxX lines as ellipses at top of window
       fill( 255, 0, 255 );
       ellipse( minX, roiY, 10, 10 );
       ellipse( maxX, roiY, 10, 10 );
-    }
 
-    // IF FRAME FOUND, DISPLAY
-    if ( sprocketSet && frameFound ) { 
-      image( frame, copy.width + 100, roiH + 20);
-    } 
-    else if ( !sprocketSet && !frameFound ) {
-      fill( #FCE400 );
-      text( "Click and drag to create new region of interest.", copy.width + 25, 50 );
-    } 
-    else {
-      fill( #FCE400 );
-      text( "No frame found. Please adjust settings and refresh", copy.width + 70, roiH + 200 );
+      if ( sprocketSet ) {
+        image( CVout, width/2, 0 );
+        stroke( 0, 255, 0 );
+        strokeWeight( 3 );
+        noFill();
+        rect( firstSprocket.x + width/2, firstSprocket.y, firstSprocket.width, firstSprocket.height );
+        rect( secondSprocket.x + width/2, secondSprocket.y, secondSprocket.width, secondSprocket.height );
+        stroke( 255, 0, 255 );
+        image( frame, copy.width + 100, roiH + 20);
+      } 
+      else {
+        fill( #FCE400 );
+        text( "No sprockets found. Please adjust settings and refresh.", copy.width + 25, roiH + 200 );
+      }
     }
+    else {
+      if( roiSet ) {
+      fill( #FCE400 );
+      text( "No edges found. Please adjust settings and refresh", copy.width + 70, roiH + 200 );
+      }
+    } 
 
     // DISPLAY MOUSE POSITION
     fill( 0 );
@@ -360,17 +371,17 @@ class Extractor {
 
   // ============================================================================== RELOAD // **
   void reload( String s ) {
-//    PImage src1 = loadImage( s );
-//    src1.resize( resizer, 0 );
-//    full = new OpenCV(  applet, src1 );
-//    full.findCannyEdges( canny1, canny2 );
-//    full.dilate();
-//    full.erode();
-//    full.dilate();
-//    hLines2 = 600;
-//    ArrayList<Line> lines = full.findLines( hLines1, hLines2, hLines3 );
-//    copy = calcRotation();
-//    hLines2 = roiFrame.height - 20;
+    //    PImage src1 = loadImage( s );
+    //    src1.resize( resizer, 0 );
+    //    full = new OpenCV(  applet, src1 );
+    //    full.findCannyEdges( canny1, canny2 );
+    //    full.dilate();
+    //    full.erode();
+    //    full.dilate();
+    //    hLines2 = 600;
+    //    ArrayList<Line> lines = full.findLines( hLines1, hLines2, hLines3 );
+    //    copy = calcRotation();
+    //    hLines2 = roiFrame.height - 20;
   }
 
 
