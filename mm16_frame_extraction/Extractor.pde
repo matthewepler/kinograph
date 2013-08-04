@@ -50,7 +50,8 @@ class Extractor {
         ROImage.copy( copy, 0, roiY, copy.width, roiH, 0, 0, copy.width, roiH );
         edges = findFilmEdges(); //println( "minX: " + minX ); println( "maxX: " + maxX );
         if ( findSprockets() ) {
-          frame = extractFrame( calcFrameRect() );
+          frameRect = calcFrameRect();
+          frame = extractFrame( frameRect );
         }
       }
     }
@@ -194,7 +195,7 @@ class Extractor {
       if ( abs( secondArea - firstArea) < 500 ) {
         sprocketSet = true;
         result = true;
-        calcFrameRect();
+        //calcFrameRect();
       }
     }  
     catch ( Exception e ) {
