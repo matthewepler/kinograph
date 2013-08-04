@@ -18,6 +18,7 @@ class Extractor {
   int rowThresh;
   int colThresh;
 
+  // General class variables
   PImage copy, CVout, ROImage, frame;
   float[] edges = new float[2];
   double angleAvg;
@@ -29,7 +30,7 @@ class Extractor {
   PApplet applet;
 
 
-  // ============================================================= CONSTRUCTOR =========== //
+  // ========================================================================= CONSTRUCTOR //
   Extractor( PApplet _this, int _r, String _f ) {
     applet = _this;
     resizer = _r;
@@ -55,7 +56,7 @@ class Extractor {
     }
   }
 
-  // ================================================================== SET DEFAULT VALUES //
+  // =========================================================================== SET VALUES //
   void setDefaultValues() {
     canny1  = 20;
     canny2  = 75;
@@ -105,7 +106,7 @@ class Extractor {
   } 
 
 
-  // ============================================================= FIND FILM EDGES ======== //
+  // ======================================================================== FIND FILM EDGES //
   float[] findFilmEdges() {   
     PImage roiFrame = createImage( copy.width, roiH, ARGB );
     roiFrame.copy( copy, 0, roiY, copy.width, roiH, 0, 0, copy.width, roiH );
@@ -164,7 +165,7 @@ class Extractor {
   }
 
 
-  // ============================================================= FIND SPROCKETS ========= //
+  // ========================================================================= FIND SPROCKETS //
   boolean findSprockets( ) { 
     boolean result = false;
     try {
@@ -204,7 +205,7 @@ class Extractor {
     return result;
   }
 
-
+  // ======================================================================= EVALUATE PIXELS //
   Rectangle evaluatePixels( int _startX, int _endX, int _startY, int _endY, int _minEdgeLen, int _rowThresh, int _colThresh ) {
     List<Integer> Xvalues = new ArrayList();
     List<Integer> Yvalues = new ArrayList();
@@ -305,7 +306,7 @@ class Extractor {
   }
 
 
-  // ============================================================= EXTRACT FRAMES ========= //
+  // ======================================================================= EXTRACT FRAMES //
   PImage extractFrame( Rectangle r ) {
     PImage result = createImage( r.width, r.height, ARGB );
     result.copy( copy, r.x, r.y, r.width, r.height, 0, 0, r.width, r.height );
@@ -371,17 +372,14 @@ class Extractor {
 
   // ============================================================================== RELOAD // **
   void reload( String s ) {
-    //    PImage src1 = loadImage( s );
-    //    src1.resize( resizer, 0 );
-    //    full = new OpenCV(  applet, src1 );
-    //    full.findCannyEdges( canny1, canny2 );
-    //    full.dilate();
-    //    full.erode();
-    //    full.dilate();
-    //    hLines2 = 600;
-    //    ArrayList<Line> lines = full.findLines( hLines1, hLines2, hLines3 );
-    //    copy = calcRotation();
-    //    hLines2 = roiFrame.height - 20;
+    copy = loadImage( s );
+    copy.resize( resizer, 0 );
+    getUserDefinedValues();
+    rotationSet = false;
+    edgesFound = false;
+    sprocketSet = false; 
+    frameFound = false;
+    go();
   }
 
 

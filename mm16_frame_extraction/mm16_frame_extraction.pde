@@ -64,11 +64,11 @@ void mouseReleased() {
       extractor.roiSet = false;
     }
   } 
-  else {
+  else { // we're in scrubber and don't want to reload until we've let go
     if ( currentFrame > 0 ) {
-      extractor.reload( files[ currentFrame - 1 ] );
       extractor.roiSet = true;
       extractor.sprocketSet = false;
+      extractor.reload( files[ currentFrame - 1 ] );
     }
   }
 }
@@ -78,7 +78,7 @@ void mouseReleased() {
 void initControls() {
   cp5 = new ControlP5( this );
   cf = addControlFrame( "Controls", 225, 900, 0, 0 );
-
+  
   controlP5.Slider scrubber = cp5.addSlider( "scrubber" );
   scrubber.setPosition( 75, height- 40 ).setSize( width - 100, 20 );
   scrubber.setRange( 1, files.length );
@@ -134,15 +134,16 @@ void getDirectory() {
 
 void reset() {
   extractor = new Extractor( this, 800, files[ files.length/2 ] ); 
-  initControls();
+  extractor.setDefaultValues();
+  extractor.go();
 }
 
-void saveAll() {
-  processAll = true;
-  fill( 0, 200 );
-  rect( 0, 0, width, height );
-  b = new BatchProcessor( this, dir, extractor.frameRect, extractor.resizer );
-  b.process();
-  println( b.bSizer );
+void processAll() {
+//  processAll = true;
+//  fill( 0, 200 );
+//  rect( 0, 0, width, height );
+//  b = new BatchProcessor( this, dir, extractor.frameRect, extractor.resizer );
+//  b.process();
+//  println( b.bSizer );
 }
 

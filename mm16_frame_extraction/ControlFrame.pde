@@ -68,7 +68,7 @@ public class ControlFrame extends PApplet {
                          // index, x,  y,  w,  h  
       cp5.addButton( "refresh", 2, 10, 620, 190, 30 ).setColor( refresh );
       cp5.addButton(" reset all", 0, 10, 800, 90, 30 ).setColor( warning ).plugTo( parent, "reset" );
-      cp5.addButton("save all", 1, 110, 800, 100, 30 ).setColor( c ).plugTo( parent, "saveAll" );
+      cp5.addButton("GO", 1, 110, 800, 100, 30 ).setColor( c ).plugTo( parent, "processAll" );
   }
 
   public void draw() {
@@ -186,8 +186,7 @@ public class ControlFrame extends PApplet {
   // =============================================================== REFRESH ===== //
   void refresh() {
      update();
-     extractor.findFilmEdges();
-     extractor.findSprockets();
+     extractor.go();
   }
   
   
