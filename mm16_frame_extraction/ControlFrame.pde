@@ -14,20 +14,20 @@ public class ControlFrame extends PApplet {
       
       //EDGE DETECTION
       // Canny Edges
-      controlP5.Numberbox cannyLow = cp5.addNumberbox( "low" ).setPosition( 70, 80 ).setSize( 130, 20 ).setRange( 0, 150 ).setScrollSensitivity( 1.0 ).setValue( extractor.canny1 ).setDirection( Controller.HORIZONTAL ); 
+      controlP5.Numberbox cannyLow = cp5.addNumberbox( "low" ).setPosition( 70, 80 ).setSize( 130, 20 ).setRange( 1, 150 ).setScrollSensitivity( 1.0 ).setValue( extractor.canny1 ).setDirection( Controller.HORIZONTAL ); 
       cannyLow.captionLabel().style().setMarginLeft( - 45 ).setMarginTop( - 20 );
       cannyLow.valueLabel().style().setMarginLeft( 80 ); 
-      controlP5.Numberbox cannyHigh = cp5.addNumberbox( "high" ).setPosition( 70, 110).setSize( 130, 20 ).setRange( 0, 250 ).setScrollSensitivity( 1.0 ).setValue( extractor.canny2 ).setDirection( Controller.HORIZONTAL );
+      controlP5.Numberbox cannyHigh = cp5.addNumberbox( "high" ).setPosition( 70, 110).setSize( 130, 20 ).setRange( 1, 250 ).setScrollSensitivity( 1.0 ).setValue( extractor.canny2 ).setDirection( Controller.HORIZONTAL );
       cannyHigh.captionLabel().style().setMarginLeft( - 45 ).setMarginTop( - 20 );
       cannyHigh.valueLabel().style().setMarginLeft( 80 );
       // Hough Lines
-      controlP5.Numberbox houghThresh = cp5.addNumberbox( "thresh" ).setPosition( 90, 180 ).setSize( 110, 20 ).setRange( 0, 600 ).setScrollSensitivity( 1.0 ).setValue( extractor.hLines1 ).setDirection( Controller.HORIZONTAL );
+      controlP5.Numberbox houghThresh = cp5.addNumberbox( "thresh" ).setPosition( 90, 180 ).setSize( 110, 20 ).setRange( 1, 600 ).setScrollSensitivity( 1.0 ).setValue( extractor.hLines1 ).setDirection( Controller.HORIZONTAL );
       houghThresh.captionLabel().style().setMarginLeft( -65 ).setMarginTop( -20 );
       houghThresh.valueLabel().style().setMarginLeft( 52 ); 
       controlP5.Numberbox houghMinLen = cp5.addNumberbox( "minLen" ).setPosition( 90, 210 ).setSize( 110, 20 ).setRange( 200, 800 ).setScrollSensitivity( 1.0 ).setValue( extractor.hLines2 ).setDirection( Controller.HORIZONTAL );
       houghMinLen.captionLabel().style().setMarginLeft( -65 ).setMarginTop( -20 );
       houghMinLen.valueLabel().style().setMarginLeft( 52 ); 
-      controlP5.Numberbox maxGap = cp5.addNumberbox( "maxGap" ).setPosition( 90, 240 ).setSize( 110, 20 ).setRange( 0, 20 ).setScrollSensitivity( 1.0 ).setValue( extractor.hLines3 ).setDirection( Controller.HORIZONTAL );
+      controlP5.Numberbox maxGap = cp5.addNumberbox( "maxGap" ).setPosition( 90, 240 ).setSize( 110, 20 ).setRange( 1, 20 ).setScrollSensitivity( 1.0 ).setValue( extractor.hLines3 ).setDirection( Controller.HORIZONTAL );
       maxGap.captionLabel().style().setMarginLeft( -65 ).setMarginTop( -20 );
       maxGap.valueLabel().style().setMarginLeft( 67 ); 
       
@@ -37,11 +37,11 @@ public class ControlFrame extends PApplet {
       minEdgeLen.captionLabel().style().setMarginLeft( -95 ).setMarginTop( -20 ); 
       minEdgeLen.valueLabel().style().setMarginLeft( 30 );  
       // rowThresh
-      controlP5.Numberbox rowThresh = cp5.addNumberbox( "rowThresh" ).setPosition( 120, 340 ).setSize( 80, 20 ).setRange( 0, 4 ).setValue( 1.0 ).setScrollSensitivity( 1.0 ).setDirection( Controller.HORIZONTAL );
+      controlP5.Numberbox rowThresh = cp5.addNumberbox( "rowThresh" ).setPosition( 120, 340 ).setSize( 80, 20 ).setRange( 1, 4 ).setValue( 1.0 ).setScrollSensitivity( 1.0 ).setDirection( Controller.HORIZONTAL );
       rowThresh.captionLabel().style().setMarginLeft( -95 ).setMarginTop( -20 );
       rowThresh.valueLabel().style().setMarginLeft( 37 ); 
       // colThresh
-      controlP5.Numberbox colThresh = cp5.addNumberbox( "colThresh" ).setPosition( 120, 370 ).setSize( 80, 20 ).setRange( 0, 4 ).setValue( 1.0 ).setScrollSensitivity( 1.0 ).setDirection( Controller.HORIZONTAL );
+      controlP5.Numberbox colThresh = cp5.addNumberbox( "colThresh" ).setPosition( 120, 370 ).setSize( 80, 20 ).setRange( 1, 4 ).setValue( 1.0 ).setScrollSensitivity( 1.0 ).setDirection( Controller.HORIZONTAL );
       colThresh.captionLabel().style().setMarginLeft( -95 ).setMarginTop( -20 );
       colThresh.valueLabel().style().setMarginLeft( 37 ); 
       

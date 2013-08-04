@@ -196,8 +196,6 @@ class Extractor {
       secondSprocket = evaluatePixels( startX, endX, startY, endY, minEdgeLen, rowThresh, colThresh );
       float secondArea = secondSprocket.width * secondSprocket.height; 
 
-      println( "secondArea: " + secondArea + ", " + "firstArea: " + firstArea );
-
       if ( abs( secondArea - firstArea) < 500 ) {
         sprocketSet = true;
         result = true;
@@ -315,14 +313,14 @@ class Extractor {
 
   // ======================================================================= EXTRACT FRAMES //
   PImage extractFrame( Rectangle r ) {
-    PGraphics result = createGraphics( r.width, r.height );
+    PGraphics result = createGraphics( r.width, r.height );;
     result.beginDraw();
     result.copy( copy, r.x, r.y, r.width, r.height, 0, 0, r.width, r.height );
-    if ( processAll ) {
-      String nameStrip =  name.substring( 0,  name.lastIndexOf('.')).toLowerCase()
-      result.save( "output/" + nameStrip + ".jpg" ); 
-    }
-    result.endDraw();
+    if( processAll ) {
+      String nameStrip = name.substring( 0, name.lastIndexOf('.')).toLowerCase();
+      result.save( "output/" + nameStrip + ".jpg" );
+    }  
+    result.endDraw(); 
     return result;
   }
 
@@ -382,7 +380,7 @@ class Extractor {
   // ============================================================================== RELOAD // **
   void reload( String s ) {
     copy = loadImage( s );
-    name = s.substring( 0,  s.lastIndexOf('.')).toLowerCase();
+    name = s;
     copy.resize( resizer, 0 );
     getUserDefinedValues();
     roiSet = true;
