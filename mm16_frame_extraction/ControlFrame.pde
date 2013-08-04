@@ -113,43 +113,74 @@ public class ControlFrame extends PApplet {
     // Canny Edge Thresh
     controlP5.Controller cLow = cp5.getController( "low" );
     int newLow = (int)cLow.getValue();
-    extractor.canny1 = newLow;
+    if( processAll ) {
+      b.e.canny1 = newLow;
+    } else {
+      extractor.canny1 = newLow;
+    }
     
     controlP5.Controller cHigh = cp5.getController( "high" );
     int newHigh = (int)cHigh.getValue();
-    extractor.canny2 = newHigh;
+    if( processAll ) {
+      b.e.canny2 = newHigh;
+    } else {
+      extractor.canny2 = newHigh;
+    }
     
     // Hugh Lines
     controlP5.Controller t = cp5.getController( "thresh" );
     int newThresh = (int)t.getValue();
-    extractor.hLines1 = newThresh;
+    if( processAll ) {
+      b.e.hLines1 = newThresh; 
+    } else {
+      extractor.hLines1 = newThresh;
+    }
     
     controlP5.Controller mLen = cp5.getController( "minLen" );
     int newMinLen = (int)mLen.getValue();
-    extractor.hLines2 = newMinLen;
+    if( processAll ) {
+      b.e.hLines2 = newMinLen;
+    } else {
+      extractor.hLines2 = newMinLen;
+    }
     
     controlP5.Controller mGap = cp5.getController( "maxGap" );
     int newMaxGap = (int)mGap.getValue();
-    extractor.hLines3 = newMaxGap;
+    if( processAll ) {
+      b.e.hLines3 = newMaxGap; 
+    } else {
+      extractor.hLines3 = newMaxGap;
+    }
     
     // Sprockets    
     controlP5.Controller minEdge = cp5.getController( "minEdgeLen" );
     int newLen = (int)minEdge.getValue();
-    extractor.minEdgeLen = newLen;
+    if( processAll ) {
+      b.e.minEdgeLen = newLen;
+    } else {
+      extractor.minEdgeLen = newLen;
+    }
    
     controlP5.Controller rt = cp5.getController( "rowThresh" );
     int newRT = (int)rt.getValue();
-    extractor.rowThresh = newRT;
+    if( processAll ) {
+      b.e.rowThresh = newRT; 
+    } else {
+      extractor.rowThresh = newRT;
+    }
    
     controlP5.Controller ct = cp5.getController( "colThresh" );
     int newCT = (int)ct.getValue();
-    extractor.colThresh = newCT; 
+    if( processAll ) {
+      b.e.colThresh = newCT; 
+    } else {
+      extractor.colThresh = newCT;
+    } 
   }
   
   void updateFile() {
     controlP5.Controller s = cp5.getController( "scrubber" );
-    println( s.getName() );
-    //extractor.reload( files[ fileNum-1 ] ); 
+//    extractor.reload( files[ fileNum-1 ] ); 
   }
   
   // =============================================================== REFRESH ===== //
@@ -169,7 +200,7 @@ public class ControlFrame extends PApplet {
     extractor.frameRect.x -=2;
     extractor.frameRect.width += 2;
     extractor.frameRect.width += 2;
-    extractor.extractFrame();
+    extractor.frame = extractor.extractFrame(extractor.frameRect);
   }
   
   void allMinus() {
@@ -180,52 +211,52 @@ public class ControlFrame extends PApplet {
     extractor.frameRect.x +=2;
     extractor.frameRect.width -= 2;
     extractor.frameRect.width -= 2;
-    extractor.extractFrame();
+    extractor.frame = extractor.extractFrame(extractor.frameRect);
   }
   
   void topPlus() { 
     extractor.frameRect.y -= 2; 
     extractor.frameRect.height += 2;
-    extractor.extractFrame();
+    extractor.frame = extractor.extractFrame(extractor.frameRect); 
   }
   
   void topMinus() {
     extractor.frameRect.y += 2;
     extractor.frameRect.height -= 2;
-    extractor.extractFrame(); 
+    extractor.frame = extractor.extractFrame(extractor.frameRect);
   }
   
   void botPlus() {
     extractor.frameRect.height += 2;
-    extractor.extractFrame();
+    extractor.frame = extractor.extractFrame(extractor.frameRect);
   }
   
   void botMinus() {
     extractor.frameRect.height -= 2;
-    extractor.extractFrame();
+    extractor.frame = extractor.extractFrame(extractor.frameRect);
   }
   
   void leftPlus() {
     extractor.frameRect.x -=2;
     extractor.frameRect.width += 2;
-    extractor.extractFrame();
+    extractor.frame = extractor.extractFrame(extractor.frameRect);
 
   }
   
   void leftMinus() {
     extractor.frameRect.x +=2;
     extractor.frameRect.width -= 2;
-    extractor.extractFrame();
+    extractor.frame = extractor.extractFrame(extractor.frameRect);
   }
   
   void rightPlus() {
     extractor.frameRect.width += 2;
-    extractor.extractFrame();
+    extractor.frame = extractor.extractFrame(extractor.frameRect);
   }
   
   void rightMinus() {
     extractor.frameRect.width -= 2;
-    extractor.extractFrame();
+    extractor.frame = extractor.extractFrame(extractor.frameRect);
   }
   
   ControlP5 cp5;

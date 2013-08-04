@@ -1,30 +1,39 @@
 import gab.opencv.*;
-import java.util.*;
+import java.util.List;
+import javax.activation.MimetypesFileTypeMap;
+import java.io.File;
 import java.awt.Rectangle;
-
 import java.awt.Frame;
 import java.awt.BorderLayout;
 import controlP5.*;
 
 private ControlP5 cp5;
-ControlFrame cf, fileSlider, finalFrame;
+ControlFrame cf;
+
+OpenCV full, sprockets;
 
 PFont font;
 boolean reset, process, processAll;
-String path = "/Volumes/3TBONE/kinograph/code/mm16_frame_extraction/data";
-File dir;
+String path = "/Users/matthewepler/Documents/myProjects/Kinograph/code_current/kinograph/mm16_frame_extraction/data/";
 String[] files;
 int currentFrame = 1;
+boolean scrubber;
+File dir;
 
 Extractor extractor;
+BatchProcessor b;
 
-boolean scrubber;
+
 
 void setup() {
   getDirectory();
-  extractor = new Extractor( this, 800 ); // int for resizing original image
-  size( extractor.mWidth * 2, extractor.mHeight + 50 );
-
+  String imageFile = files[ files.length/2 ];
+  
+  extractor = new Extractor( this, 800, imageFile );
+  extractor.setDefaultValues();
+  extractor.go();
+  
+  size( extractor.copy.width * 2, extractor.copy.height + 50 );
   font = loadFont( "HelveticaNeue-Light-16.vlw" );
   textFont( font, 18 );
 
@@ -119,16 +128,21 @@ void getDirectory() {
     fail += "\n";
     fail += "Path = " + path;
     println( fail );
+    exit();
   }
 }
 
 void reset() {
-  extractor = new Extractor( this, 800 ); 
+  extractor = new Extractor( this, 800, files[ files.length/2 ] ); 
   initControls();
 }
 
 void saveAll() {
-  // save values to be used for batch processing
-  // that process will be based on existing code for 35mm (see repo)
+  processAll = true;
+  fill( 0, 200 );
+  rect( 0, 0, width, height );
+  b = new BatchProcessor( this, dir, extractor.frameRect, extractor.resizer );
+  b.process();
+  println( b.bSizer );
 }
 
