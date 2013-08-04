@@ -304,8 +304,13 @@ class Extractor {
     // aka, frame width
     float sideMargin = (firstSprocket.x) + firstSprocket.width - minX;
     float frameRight = maxX - sideMargin;
-
+    
+    // force for debugging
+    frameLeft = 0;
+    frameRight = width/2;
+    
     int frameWidth = (int)frameRight - (int)frameLeft;
+    
     Rectangle result = new Rectangle( frameLeft, (int)frameTop, frameWidth, frameHeight ); // for reference in frame adjustment controls
     return result;
   }
