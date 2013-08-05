@@ -306,8 +306,8 @@ class Extractor {
     float frameRight = maxX - sideMargin;
     
     // force for debugging
-    frameLeft = 0;
-    frameRight = width/2;
+//    frameLeft = 0;
+//    frameRight = width/2;
     
     int frameWidth = (int)frameRight - (int)frameLeft;
     

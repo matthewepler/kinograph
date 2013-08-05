@@ -14,7 +14,7 @@ OpenCV full, sprockets;
 
 PFont font;
 boolean reset, process, processAll;
-String path = "/Users/matthewepler/Documents/myProjects/Kinograph/code_current/kinograph/mm16_frame_extraction/data/";
+String path = "/Users/matthewepler/Documents/myProjects/Kinograph/code_current/kinograph/mm16_frame_extraction_multiple/data/";
 String[] files;
 int currentFrame;
 boolean scrubber;
@@ -27,8 +27,8 @@ BatchProcessor b;
 
 void setup() {
   getDirectory();
-  currentFrame = files.length/2;
-  String imageFile = files[ currentFrame ];
+  currentFrame = 1;
+  String imageFile = files[ currentFrame + 1 ];
   
   extractor = new Extractor( this, 800, imageFile );
   extractor.setDefaultValues();
@@ -85,7 +85,7 @@ void initControls() {
   controlP5.Slider scrubber = cp5.addSlider( "scrubber" );
   scrubber.setValue( currentFrame );
   scrubber.setPosition( 75, height- 40 ).setSize( width - 100, 20 );
-  scrubber.setRange( 1, files.length );
+  scrubber.setRange( 1, files.length - 1 );
   scrubber.setNumberOfTickMarks( 24 );
   scrubber.setDefaultValue( files.length/2 );
   scrubber.snapToTickMarks( false );
@@ -113,7 +113,7 @@ void scrubber( int value )
 {
   currentFrame = value;
   controlP5.Controller s = cp5.getController( "scrubber" );
-  s.setValueLabel( "File " + currentFrame + " of " + files.length );
+  s.setValueLabel( "File " + currentFrame + " of " + (files.length - 1) );
 }
 
 void getDirectory() {
