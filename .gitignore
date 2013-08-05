@@ -11,3 +11,4 @@
 *.DPX
 *.vlw
 log.txt
+!test.jpg
