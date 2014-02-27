@@ -11,4 +11,12 @@
 *.DPX
 *.vlw
 log.txt
-!test.jpg
+!test1.jpg
+!test2.jpg
+!test3.jpg
+!test4.jpg
+!test5.jpg
+!test6.jpg
+!test7.jpg
+!output.jpg
+
