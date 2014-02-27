@@ -1,45 +1,49 @@
 /*
-  >> GUI to include:
-  + all variables
-  + threshold
- 
-  >> Frame doctor for frames with false positive results post-extraction
+  NOTE 1: Use your mouse position to set the global variables. Once you 
+  have found the values to fill in the variables by hand, you can 
+  use these in the "multiple" sketch and that will run through a whole
+  directory with the settings you found here.
   
-*/
+  Copyright (C) 2013 Matthew Epler
 
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+*/
+// Greg Borenstein's OpenCV Library for Processing 2.0
+// https://github.com/atduskgreg/opencv-processing
+// my code needs to be updated to his more current func calls
 import gab.opencv.*;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.CvType;
-
 import org.opencv.core.MatOfPoint;
 import org.opencv.core.MatOfPoint2f;
-
 import org.opencv.core.Point;
-
 import java.awt.Rectangle;
 
-/* random 3 images - run each and compare values
-_MG_0351 copy.jpg
-_MG_0490 copy.jpg
- */
-
-String inputFilename = "001.jpg";
+String inputFilename = "test1.jpg";
 int resizedImageWidth = 800;
 
-int roiTop = 100;
-int roiBottom = 210;
+// hardcoded search values
+int roiTop = 99;
+int roiBottom = 223;
 int roiHeight = roiBottom - roiTop;
-int searchColumn = 772;
-int distanceBetweenSprockets = 70;
+int searchColumn = 765;
+int distanceBetweenSprockets = 61;
 int minVerticalEdgeLength = roiBottom - roiTop;
 
-// MINE
-int frameRightTarget = 720;
-int frameLeftTarget = 166;
+int frameRightTarget = 715;
+int frameLeftTarget = 202;
 int frameWidth = frameRightTarget - frameLeftTarget;
-int frameHeight = 400;
+int frameHeight = 375;
 int frameHorizMargin = 10;
 int framePadding = 0;
 int threshLevel = 90;
@@ -109,16 +113,23 @@ void setup() {
   
   // === CALCULATE FRAME DIMENSIONS === //
   float frameRight = 0;
-  for (Contour edge : approximations) {
-    ArrayList<PVector> edgePoints = edge.getPolygonApproximation().getPoints();
-    float edgeX = edgePoints.get(0).x;
-    if (edgeX > frameRight && edgeX < searchColumn) {
-      frameRight = edgeX;
-    }
-  }
+//  for (Contour edge : approximations) {
+//    ArrayList<PVector> edgePoints = edge.getPolygonApproximation().getPoints();
+//    float edgeX = edgePoints.get(0).x;
+//    if (edgeX > frameRight && edgeX < searchColumn) {
+//      frameRight = edgeX;
+//    }
+//  }
+//
+//  float frameLeft = frameRight - frameWidth;
+//  selectedArea = new Rectangle((int)frameLeft - framePadding, topSprocketEdge - framePadding, frameWidth + (framePadding*2), frameHeight + (framePadding*2));
 
-  float frameLeft = frameRight - frameWidth;
-  selectedArea = new Rectangle((int)frameLeft - framePadding, topSprocketEdge - framePadding, frameWidth + (framePadding*2), frameHeight + (framePadding*2));
+  /* If you've chosen to use the left side sprockets for your seach column,
+   or you want to force the program to use your frameTargetLeft and frameTargetRight values,
+   use this one line. (Don't forget to comment out the lines preceeding it, starting at
+   "float frameRight = 0," and ending at the new Rectangle line.)
+  */
+  selectedArea = new Rectangle( frameLeftTarget - framePadding, topSprocketEdge - framePadding, frameRightTarget - frameLeftTarget + (framePadding * 2), frameHeight + (framePadding * 2 ));
 
   output = createGraphics(selectedArea.width, selectedArea.height);
   output.beginDraw();
