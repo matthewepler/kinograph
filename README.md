@@ -1,20 +1,25 @@
-kinograph
-=========
+# Kinograph Frame Extraction 
 
-Code for the kinograph project (http://kinograph.cc). This is not publicly released. If you're reading this, you got lucky.
+## Summary
 
-Dependencies
-(list placeholder)
+Code for the kinograph project v0.1 (http://kinograph.cc). Videos describing how to use the machine and this software together will be located there.
 
-So far, there are two sketches:
+Kinograph is a DIY Film Scanner/Telecine for 35mm, 16mm, and 8mm film (8mm is still in development and not included in the project at this time). This entire project is just getting started and should be considered highly experimental (read: nowhere near full public release), but I want to make it available to those with an interest in helping improve its current state. 
 
-mm35_frame_extraction_single
+These programs are written in Processing and extract single frames from raw images of film captured with the Kinograph machine (or any other machine, really). The underlying logic is that all frames can be identified in relation to sprocket holes. Because sprocket hole spacing is different for every gauge of film, there are different programs for each gauge. 
 
-  The original code used for the sequence seen in Kinograph's intro videos. Add a file iterator and it's good to go. I'll upload a batch of 35mm stills for your own use to AmazonS3 soon.
-  
-mm16_frame_extraction_multiple
+## Dependencies
+[Processing](http://processing.org)
 
-  A modified approach focusing on reading brightness data in a binary image to find sprockets. Note that 16mm only has one sprocket per frame while 35mm has 4 per frame.
-  This isn't working quite as well as the code for 35mm, but I wanted to take a shot at something different. Feel free to offer suggestions.
-  
-Now stop snooping.
+[Control P5 library for processing](http://www.sojamo.de/libraries/controlP5/)
+
+[OpenCV library for Processing by Greg Borenstein](https://github.com/atduskgreg/opencv-processing)
+
+## Details
+So far, there are two approaches:
+
+The 16mm software is more advanced than 35mm software right now. It allows you to load a whole folder of images, find the proper thresholds and ROI (region of interest) information and use those setting to extract frames from all images in the folder. It isn't pretty looking but it works. This approach uses brightness information in a binary image to find sprocket positions and then extracts the frame relative to the sprocket's location.
+
+35mm extraction currently relies on the user evaluating a single frame and capturing coordinates manually. Assuming your collection of frames was caputred with minimum flutter in the gate, those values should work for almost all of your frames. Obviously, this is not ideal but allows the most direct control over the software.
+
+Contact me directly (info@kinograph.cc) if you have any questions or comments. 
