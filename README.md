@@ -1,10 +1,18 @@
-# Kinograph Frame Extraction 
+# Kinograph Project Code Repository
 
 ## Summary
 
 Code for the kinograph project v0.1 (http://kinograph.cc). Videos describing how to use the machine and this software together will be located there.
 
 Kinograph is a DIY Film Scanner/Telecine for 35mm, 16mm, and 8mm film (8mm is still in development and not included in the project at this time). This entire project is just getting started and should be considered highly experimental (read: nowhere near full public release), but I want to make it available to those with an interest in helping improve its current state. 
+
+## Arduino - Electronics Control (For controlling machine)
+
+This code is written in Arduino for the Arduino UNO board. Instructions for electronics assembly can be found on the [Instructables site](http://www.instructables.com/id/Kinograph-v01-DIY-Film-Scanner/step9/Electronics/).
+
+Upload this code, connect your power supply, camera, and the switch on your Kinograph to operate.
+
+## Processing - Frame Extraction (Post-processing of images captured by Kinograph machine)
 
 These programs are written in Processing and extract single frames from raw images of film captured with the Kinograph machine (or any other machine, really). The underlying logic is that all frames can be identified in relation to sprocket holes. Because sprocket hole spacing is different for every gauge of film, there are different programs for each gauge. 
 
