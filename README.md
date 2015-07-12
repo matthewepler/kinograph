@@ -16,14 +16,14 @@ Upload this code, connect your power supply, camera, and the switch on your Kino
 
 These programs are written in Processing and extract single frames from raw images of film captured with the Kinograph machine (or any other machine, really). The underlying logic is that all frames can be identified in relation to sprocket holes. Because sprocket hole spacing is different for every gauge of film, there are different programs for each gauge. 
 
-## Dependencies
+### Dependencies
 [Processing](http://processing.org)
 
 [Control P5 library for processing](http://www.sojamo.de/libraries/controlP5/)
 
 [OpenCV library for Processing by Greg Borenstein](https://github.com/atduskgreg/opencv-processing)
 
-## Details
+### Details
 So far, there are two approaches:
 
 The 16mm software is more advanced than 35mm software right now. It allows you to load a whole folder of images, find the proper thresholds and ROI (region of interest) information and use those setting to extract frames from all images in the folder. It isn't pretty looking but it works. This approach uses brightness information in a binary image to find sprocket positions and then extracts the frame relative to the sprocket's location.
