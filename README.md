@@ -8,6 +8,14 @@ Kinograph is a DIY Film Scanner/Telecine for 35mm, 16mm, and 8mm film (8mm is st
 
 ## Arduino - Electronics Control (For controlling machine)
 
+### openFrameworks
+If you are familiar with openFrameworks, you can use this code in tandem with the Arduino hardware. You will need to upload the Standard Firmata code for your Arduino to communicate with the app. 
+
+You DO NOT have to use this code to get Kinograph to work. If you're more familiar with Arduino code, just use that instead. The only difference between the two is the on-screen feedback (current speed, # of pictures taken, etc.)
+
+### Arduino
+Use the Arduino code if you do not need on-screen feedback of frame capture rate. This code has everything the OF code has, including auto speed control if you want it. The only thing it doesn't have is the on-screen feedback.
+
 This code is written in Arduino for the Arduino UNO board. Instructions for electronics assembly can be found on the [Instructables site](http://www.instructables.com/id/Kinograph-v01-DIY-Film-Scanner/step9/Electronics/).
 
 Upload this code, connect your power supply, camera, and the switch on your Kinograph to operate.
