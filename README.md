@@ -13,6 +13,8 @@ If you are familiar with openFrameworks, you can use this code in tandem with th
 
 You DO NOT have to use this code to get Kinograph to work. If you're more familiar with Arduino code, just use that instead. The only difference between the two is the on-screen feedback (current speed, # of pictures taken, etc.)
 
+Plug in the Arduino to your computer via USB. Change the port string for the Arduino in the code. Power up your power supply and camera. When ready, start the OF app by clicking "Run" in XCode.
+
 ### Arduino
 Use the Arduino code if you do not need on-screen feedback of frame capture rate. This code has everything the OF code has, including auto speed control if you want it. The only thing it doesn't have is the on-screen feedback.
 
