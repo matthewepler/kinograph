@@ -16,11 +16,9 @@ class BatchProcessor {
     for ( int i = 0; i < fileDir.length; i++ ) {
       File thisFile = fileDir[ i ];
       String thisFileName = thisFile.getName();
-      String mimetype = new MimetypesFileTypeMap().getContentType( thisFile );
-      String type = mimetype.split("/")[0];
-      if ( type.equals("image") && !thisFileName.contains("test") ) {
-        //println( thisFileName );
-        // do the thing
+     
+      if ( thisFileName.contains(fileType) ) {
+        println("processing " + thisFileName);
         try {
           e.reload( thisFileName );
           println( (i+1) + " of " + (fileDir.length-1) + " complete: " + thisFileName );

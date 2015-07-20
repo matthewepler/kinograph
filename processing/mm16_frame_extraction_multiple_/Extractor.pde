@@ -71,8 +71,8 @@ class Extractor {
     hLines2 = 600;
     hLines3 = 5;
     sprocketThresh = 150;
-    roiY = 200;
-    roiH = 500;
+    roiY = 150;
+    roiH = 400;
     roiSet = true;
     showRoi = true;
   }

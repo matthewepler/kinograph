@@ -39,7 +39,8 @@ BatchProcessor b;
 
 PFont font;
 boolean reset, process, processAll;
-String path = "/Users/matthewepler/Documents/myProjects/Kinograph/code_current/kinograph/mm16_frame_extraction_multiple/data/";
+String path = "/Users/matthewepler/Documents/mepler/myProjects/kinograph_new/code/kinograph/processing/mm16_frame_extraction_multiple_/data/";
+String fileType = "jpg";
 String[] files;
 int currentFrame;
 boolean scrubber;
