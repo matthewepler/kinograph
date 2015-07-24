@@ -26,6 +26,8 @@ Upload this code, connect your power supply, camera, and the switch on your Kino
 
 These programs are written in Processing and extract single frames from raw images of film captured with the Kinograph machine (or any other machine, really). The underlying logic is that all frames can be identified in relation to sprocket holes. Because sprocket hole spacing is different for every gauge of film, there are different programs for each gauge. 
 
+[This video](https://vimeo.com/134367767) describes how to use this software (16mm only right now).
+
 ### Dependencies
 [Processing](http://processing.org)
 
