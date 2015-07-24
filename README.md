@@ -45,7 +45,7 @@ Contact me directly (info@kinograph.cc) if you have any questions or comments.
 ### Alternatives 
 Charles Pomanski, a member of the Kinograph community, has made videos showing how he uses Blender and Fusion to stabilize a sequence of frames captured with the Kinograph machine. You can see them on YouTube:
 
-[Image Stabilization with Blender 7](https://www.youtube.com/watch?v=Y5o09uRTzdU)
+[Image Stabilization with Blender](https://www.youtube.com/watch?v=Y5o09uRTzdU)
 
 [Image Registration with Fusion 7](https://www.youtube.com/watch?v=EE_T-g8w2Pc)
 
