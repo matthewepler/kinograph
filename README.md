@@ -41,3 +41,11 @@ The 16mm software is more advanced than 35mm software right now. It allows you t
 35mm extraction currently relies on the user evaluating a single frame and capturing coordinates manually. Assuming your collection of frames was caputred with minimum flutter in the gate, those values should work for almost all of your frames. Obviously, this is not ideal but allows the most direct control over the software.
 
 Contact me directly (info@kinograph.cc) if you have any questions or comments. 
+
+### Alternatives 
+Charles Pomanski, a member of the Kinograph community, has made videos showing how he uses Blender and Fusion to stabilize a sequence of frames captured with the Kinograph machine. You can see them on YouTube:
+
+[Image Stabilization with Blender 7](https://www.youtube.com/watch?v=Y5o09uRTzdU)
+
+[Image Registration with Fusion 7](https://www.youtube.com/watch?v=EE_T-g8w2Pc)
+
