@@ -39,7 +39,7 @@ BatchProcessor b;
 
 PFont font;
 boolean reset, process, processAll;
-String path = "/Users/matthewepler/Documents/mepler/myProjects/kinograph_new/code/kinograph/processing/mm16_frame_extraction_multiple_/data/";
+String path = "/Users/matthewepler/Desktop/kinograph/processing/mm16_frame_extraction_multiple_/data/";
 String fileType = "jpg";
 String[] files;
 int currentFrame;
