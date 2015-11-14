@@ -31,7 +31,7 @@ These programs are written in Processing and extract single frames from raw imag
 ### Dependencies
 [Processing](http://processing.org)
 
-[Control P5 library for processing](http://www.sojamo.de/libraries/controlP5/)
+[Control P5 library v 2.0.4 for Processing](https://code.google.com/p/controlp5/downloads/detail?name=controlP5-2.0.4.zip&can=2&q=)
 
 [OpenCV library for Processing by Greg Borenstein](https://github.com/atduskgreg/opencv-processing)
 
