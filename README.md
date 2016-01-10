@@ -29,11 +29,11 @@ These programs are written in Processing and extract single frames from raw imag
 [This video](https://vimeo.com/134367767) describes how to use this software (16mm only right now).
 
 ### Dependencies
-[Processing](http://processing.org)
+[Processing 2.2.1](https://processing.org/download/?processing) NOTE: This does not work with Processing 3.
 
-[Control P5 library v 2.0.4 for Processing](https://code.google.com/p/controlp5/downloads/detail?name=controlP5-2.0.4.zip&can=2&q=)
+[Control P5 library v 2.0.4 for Processing](https://code.google.com/p/controlp5/downloads/detail?name=controlP5-2.0.4.zip&can=2&q=) NOTE: Download the zip file at this link and [install manually](https://github.com/processing/processing/wiki/How-to-Install-a-Contributed-Library). You must use this version. Processing will ask you if you want to update the library. DO NOT udpate. 
 
-[OpenCV library for Processing by Greg Borenstein](https://github.com/atduskgreg/opencv-processing)
+[OpenCV library for Processing by Greg Borenstein](https://github.com/atduskgreg/opencv-processing) NOTE: You should install this library from within Processing by using the menu bar Sketch > Import Library > Add Library. Search for "opencv" and select the one with "Greg Borenstein" as the author. Click the Import button and restart Processing when install is complete. 
 
 ### Details
 So far, there are two approaches:
